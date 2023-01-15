@@ -3,9 +3,9 @@ const router = express.Router()
 const fs = require('fs')
 
 
-router.get('/get-views', (req, res)=>{
-    const views = fs.readFileSync('./views.json', 'utf-8')
-    const viewsData = JSON.parse(views)
+router.get('/get-visitors', (req, res)=>{
+    const visitors = fs.readFileSync('./visitors.json', 'utf-8')
+    const viewsData = JSON.parse(visitors)
     res.status(200).json({
         views:viewsData.views
     })

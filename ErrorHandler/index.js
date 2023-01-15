@@ -1,11 +1,11 @@
 const express = require('express')
 const app = express()
-const errorHandler = require('./middleware/errorhandler')
+const errorHandler = require('./errorHandlerMiddleware/errorhandler')
 const routes = require('./routes/routes')
 app.use(express.json())
 
 app.listen(3000, ()=>{
-    console.log("Server started");
+    console.log("Server has been started");
     
 })
 app.use(errorHandler)
