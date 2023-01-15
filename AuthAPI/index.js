@@ -6,7 +6,7 @@ app.use(express.json())
 
 
 app.listen(3000, ()=>{
-    console.log("Server Started...");
+    console.log("Server has been started");
 })
 
 require('dotenv').config()
@@ -19,7 +19,7 @@ db.on('error', (err)=>{
 })
 
 db.once('connected', ()=>{
-    console.log('Database Connected');
+    console.log('Server Connected');
 })
 
 const routes = require('./routes/routes')

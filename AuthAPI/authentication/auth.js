@@ -3,7 +3,7 @@ const verifyToken = (req, res, next)=>{
     const token = req.body.token || req.query.token || req.headers["x-access-token"] || req.headers["token"]
 
     if(!token){
-        return res.status(403).send("A token is required")
+        return res.status(403).send("Token is required")
     }
 
     try{
@@ -11,7 +11,7 @@ const verifyToken = (req, res, next)=>{
         req.user = decoded
         console.log({decoded});
     }catch(err){
-        return res.status(401).send("Invalid Credentials")
+        return res.status(401).send("Invalid Credentials Entered")
     }
     return next()
 } 

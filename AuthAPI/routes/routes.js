@@ -3,31 +3,32 @@ const router = express.Router();
 const bcrypt = require("bcrypt");
 const User = require("../models/userModel");
 const jwt = require("jsonwebtoken");
-const auth = require("../auth/auth")
-router.get("/all-users",auth, (req, res) => {
-  res.send("users Here");
+const auth = require("../authentication/auth")
+router.get("/all-users-details",auth, (req, res) => {
+  res.send("Users details");
 });
 
 router.post("/sign-up", async (req, res) => {
   try {
-    const { email, password } = req.body;
+    const {name, email, password } = req.body;
     let isUser = await User.findOne({ email });
     if (isUser) {
       res.status(401).json({ message: "Email already in use" });
       return;
     }
 
-    if (password.length < 6) {
+    if (password.length < 7) {
       res
         .status(401)
-        .json({ message: "Password must be more than 6 characters long" });
+        .json({ message: "Password must be more than 7 characters long" });
       return;
     }
-    const saltrounds = 10;
+    const saltround = 12;
 
-    let hash = await bcrypt.hash(password, saltrounds);
+    let hash = await bcrypt.hash(password, saltround);
    
     let user = new User({
+      name : name,
       email: email,
       password: hash,
     });
@@ -41,7 +42,7 @@ router.post("/sign-up", async (req, res) => {
       },
       process.env.JWT_TOKEN,
       {
-        expiresIn: "1h",
+        expiresIn: "2h",
       }
     );
 
@@ -62,7 +63,7 @@ router.post("/sign-in", async (req, res) => {
     let user = await User.findOne({ email });
 
     if (!user) {
-      return res.status(401).json({ message: "Invalid Credentials" });
+      return res.status(401).json({ message: "Invalid Credentials Entered" });
     }
 
     bcrypt.compare(password, user.password, (err, result) => {
@@ -75,7 +76,7 @@ router.post("/sign-in", async (req, res) => {
             },
             process.env.JWT_TOKEN,
             {
-              expiresIn: "1h",
+              expiresIn: "2h",
             }
           );
           user = user.toObject()
@@ -84,7 +85,7 @@ router.post("/sign-in", async (req, res) => {
       }
 
       console.log(err);
-      return res.status(401).json({ message: "Invalid Credentials" });
+      return res.status(401).json({ message: "Invalid Credentials Entered" });
     });
   } catch (err) {
     res.status(401).json(err);
